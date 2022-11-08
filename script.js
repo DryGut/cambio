@@ -1,9 +1,10 @@
-const inicio = document.getElementById('data-inicio');
-const fim = document.getElementById('data-final');
-const codigo = document.getElementById('codigo-pais');
-const btn = document.getElementById('btn');
-const moeda = document.getElementById('moedapais');
-
+const htmlTag = {
+    startPeriod: document.getElementById('data-inicio'),
+    endPeriod: document.getElementById('data-final'),
+    countryCode: document.getElementById('codigo-pais'),
+    searchBtn: document.getElementById('btn'),
+    countryCurrency: document.getElementById('moedapais')
+}
 const getHistoricalRates = async(start_date, end_date, country_code) =>{
     let historicalRateUrl = `https://api.exchangerate.host/timeseries?start_date=${start_date}&end_date=${end_date}&base=${country_code}`;
     let response = await fetch(historicalRateUrl);
@@ -17,7 +18,7 @@ const showRatesByPeriod = async(start_date, end_date, country_code) =>{
     let data = await getHistoricalRates(start_date, end_date, country_code);
     let cotacao = [];
     for(let value in data.rates){
-        cotacao.push(Number(data.rates[value][moeda.value.toUpperCase()]).toFixed(2));
+        cotacao.push(Number(data.rates[value][htmlTag.countryCurrency.value.toUpperCase()]).toFixed(2));
     }
     let xValue = Object.keys(data.rates);
     let yValue = cotacao;
@@ -36,12 +37,12 @@ const showRatesByPeriod = async(start_date, end_date, country_code) =>{
     });
 }
 
-btn.addEventListener('click', (event=>{
+htmlTag.searchBtn.addEventListener('click', (event=>{
     event.preventDefault();
-    showRatesByPeriod(inicio.value, fim.value, codigo.value);
-    moeda.value;
-    inicio.value = '';
-    fim.value = '';
-    codigo.value = '';
+    showRatesByPeriod(htmlTag.startPeriod.value, htmlTag.endPeriod.value, htmlTag.countryCode.value);
+    htmlTag.countryCurrency.value;
+    htmlTag.startPerido.value = '';
+    htmlTag.endPeriod.value = '';
+    htmlTag.countryCode.value = '';
 }));
 
